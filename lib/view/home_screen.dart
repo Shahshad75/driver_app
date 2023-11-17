@@ -10,7 +10,9 @@ import 'drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+
   HomeController controller = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -9,7 +9,7 @@ class DriverModel {
   final String gender;
   final String username;
   final String password;
-  final String qualification;
+
   final int experience;
   final String status;
   final String description;
@@ -25,7 +25,6 @@ class DriverModel {
     required this.gender,
     required this.username,
     required this.password,
-    required this.qualification,
     required this.experience,
     required this.status,
     required this.description,
@@ -43,7 +42,6 @@ class DriverModel {
       gender: json['gender'],
       username: json['username'],
       password: json['password'],
-      qualification: json['qualification'],
       experience: int.parse(json['experience']),
       status: json['status'],
       description: json['description'],

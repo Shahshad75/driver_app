@@ -39,7 +39,6 @@ class SignupController extends GetxController {
     selectedVehicleGet = vehicleOptions.firstWhere(
         (vehicle) => vehicle.id == value,
         orElse: () => VehicleSelection(id: 0, name: ''));
-    
   }
 
   GlobalKey<FormState> personalKey = GlobalKey<FormState>();
@@ -95,7 +94,7 @@ class SignupController extends GetxController {
         birthDate: birthController.text.trim(),
         driverImg: profilePic.urlImage.value,
         gender: genderController.text.trim(),
-        qualification: licenseController.text.trim(),
+        licenseNumber: licenseController.text.trim(),
         experience: expController.text.trim());
     int? id = await Apicalling.driverPost(driver);
     if (id != null) {
@@ -137,16 +136,14 @@ class SignupController extends GetxController {
 
   addVehicleDetails(int userId) async {
     final vehicle = VehicleDetails(
-      userId: userId,
-      vehicleBrand: carBrandController.text.trim(),
-      vehicleModel: carModelController.text.trim(),
-      vehicleYear: carYearControllerl.text.trim(),
-      vehicleColor: carColorController.text.trim(),
-      vehicleSeat: carSeatController.text.trim(),
-      vehicleNumber: carNumberController.text.trim(),
-      vehicleType: selectedVehicleGet!.name.trim()
-
-    );
+        userId: userId,
+        vehicleBrand: carBrandController.text.trim(),
+        vehicleModel: carModelController.text.trim(),
+        vehicleYear: carYearControllerl.text.trim(),
+        vehicleColor: carColorController.text.trim(),
+        vehicleSeat: carSeatController.text.trim(),
+        vehicleNumber: carNumberController.text.trim(),
+        vehicleType: selectedVehicleGet!.name.trim());
     bool sucesss = await Apicalling.addVehicle(vehicle);
     if (sucesss) {
       Get.to(DocumentScreen(
