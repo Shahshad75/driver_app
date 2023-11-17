@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
@@ -42,19 +43,19 @@ class HomeController extends GetxController {
     _locationSubscription.cancel();
   }
 
-  // Future<void> _getAddressFromCoordinates() async {
-  //   try {
-  //     List<Placemark> placemarks = await placemarkFromCoordinates(
-  //         currentLocation.value.latitude, currentLocation.value.longitude);
-  //     Placemark place = placemarks[0];
+  Future<void> _getAddressFromCoordinates() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentLocation.value.latitude, currentLocation.value.longitude);
+      Placemark place = placemarks.first;
 
-  //     currentAddress.value =
-  //         "${place.name}, ${place.locality}, ${place.street}, ${place.country}, ${place.postalCode}";
-  //     print("Address :-${currentAddress.value}");
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+      currentAddress.value =
+          "${place.name}, ${place.locality}, ${place.street}, ${place.country}, ${place.postalCode}";
+      print("Address :-${currentAddress.value}");
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> _startLocationUpdates() async {
     _locationSubscription = Geolocator.getPositionStream(
@@ -64,9 +65,12 @@ class HomeController extends GetxController {
       currentLocation.value = position;
       print(
           "Location Changed to Latitude is ${currentLocation.value.latitude} and Longitude is ${currentLocation.value.longitude}");
-
-      // _getAddressFromCoordinates();
+      updateToDB();
+      _getAddressFromCoordinates();
     });
+  }
+
+  updateToDB() async {
     var added = await Apicalling.updateLocationCoordinates(
         currentLocation.value, controller.driver.id);
     print("Added := $added");
@@ -82,6 +86,6 @@ class HomeController extends GetxController {
       permission = await Geolocator.requestPermission();
     }
     currentLocation.value = await Geolocator.getCurrentPosition();
-    // _getAddressFromCoordinates();
+    _getAddressFromCoordinates();
   }
 }

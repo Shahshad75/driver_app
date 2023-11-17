@@ -56,13 +56,18 @@ class Apicalling {
     }
   }
 
-  static Future<bool> updateLocationCoordinates(Position position,int id) async {
-    var url = '${Url.baseUrlPhone}${Url.updateLocation}$id';
+  static Future<bool> updateLocationCoordinates(
+      Position position, int id) async {
+    var url = '${Url.baseUrlPhone}${Url.updateLocation}/$id';
     var uri = Uri.parse(url);
     final body = {
-      "latitude": position.latitude,
-      " longitude": position.longitude
+      "latitude": position.latitude.toString(),
+      "longitude": position.longitude.toString()
     };
+    print('Cordinates');
+    print(position.latitude.toString());
+    print(position.longitude.toString());
+
     var response =
         await http.patch(uri, body: jsonEncode(body), headers: Url.headers);
     return response.statusCode == 200;
