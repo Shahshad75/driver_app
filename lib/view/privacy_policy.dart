@@ -20,6 +20,7 @@ class PrivacyPolicy extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                
                 icon: const Icon(
                   Icons.arrow_back,
                   color: Color.fromARGB(255, 255, 255, 255),
