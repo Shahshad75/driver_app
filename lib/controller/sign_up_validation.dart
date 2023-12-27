@@ -1,16 +1,19 @@
 import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:taxi_app/model/document_model.dart';
 import 'package:taxi_app/model/driver_model.dart';
-import 'package:taxi_app/service/api.dart';
+import 'package:taxi_app/model/vehicle_model.dart';
+import 'package:taxi_app/service/repo.dart';
 import 'package:taxi_app/view/document_screen.dart';
 import 'package:taxi_app/view/loding_screen.dart';
 import 'package:taxi_app/view/vehicle_details.dart';
-import '../model/vehicle_model.dart';
+import 'package:taxi_app/widgets/buttons/autbutton.dart';
 
 SignupController licenseFrontController = SignupController();
 SignupController licenseBackController = SignupController();
@@ -44,10 +47,12 @@ class SignupController extends GetxController {
   GlobalKey<FormState> personalKey = GlobalKey<FormState>();
   GlobalKey<FormState> vehicleKey = GlobalKey<FormState>();
   GlobalKey<FormState> uploadAdharkey = GlobalKey<FormState>();
+  GlobalKey<FormState> signinsformKey = GlobalKey<FormState>();
+
   GlobalKey<FormState> uploadformKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
-
+  final passwordController = TextEditingController();
   final nameController = TextEditingController();
   final lastnameController = TextEditingController();
   final locationController = TextEditingController();
@@ -72,11 +77,10 @@ class SignupController extends GetxController {
   final passwordercontroller = TextEditingController();
   var isProfiepathSet = false.obs;
   var profilepicPath = ''.obs;
-  var urlImage = ''.obs;
+  var imageUrl = ''.obs;
   RxBool uploaded = false.obs;
   RxBool uploadedAdhr = false.obs;
 
-  //
   RxString selectRepeat = 'None'.obs;
   final List<String> selectRepeatList = [
     'None',
@@ -84,103 +88,93 @@ class SignupController extends GetxController {
     'Female',
   ];
 
-//============add driver================//
   createDriver() async {
+    print("inside Function");
     final driver = Driver(
+        licenseNumber: licenseController.text.trim(),
         name: nameController.text.trim(),
         lastName: lastnameController.text.trim(),
         phoneNumber: phoneController.text.trim(),
         email: emailContorllers.text.trim(),
         birthDate: birthController.text.trim(),
-        driverImg: profilePic.urlImage.value,
+        driverImg: profilePic.imageUrl.value,
         gender: genderController.text.trim(),
-        licenseNumber: licenseController.text.trim(),
         experience: expController.text.trim());
-    int? id = await Apicalling.driverPost(driver);
+    int? id = await Repo.driverPost(driver);
     if (id != null) {
       driver.id = id;
       Get.to(VehicleInfo(
         userId: id,
       ));
     } else {
-      Get.snackbar(
-          'Error Occured', 'The Personal datas not added well ,try again ');
+      print("Failed to Add Driver details");
     }
+  }
+
+  addVehicleDetails(userId) async {
+    final vehicle = VehicleDetails(
+      userId: userId,
+      vehicleBrand: carBrandController.text.trim(),
+      vehicleModel: carModelController.text.trim(),
+      vehicleYear: carYearControllerl.text.trim(),
+      vehicleColor: carColorController.text.trim(),
+      vehicleSeat: carSeatController.text.trim(),
+      vehicleNumber: carNumberController.text.trim(),
+      vehicleType: selectedVehicleGet!.name.trim(),
+    );
+    bool added = await Repo.addVehicle(vehicle);
+    if (added) {
+      Get.to(DocumentScreen(id: userId), transition: Transition.cupertino);
+    } else {
+      print("Failed to Add Vehicle details");
+    }
+  }
+
+  addDriverDocuments(userId) async {
+    final documents = Documents(
+        userId: userId,
+        licenseNo: licenseController.text.trim(),
+        licenseExp: expiereDateController.text.trim(),
+        licenseFront: licenseFrontController.imageUrl.value,
+        licenseBack: licenseBackController.imageUrl.value,
+        adharNo: adharNumberController.text.trim(),
+        adharAddress: adharAddressController.text.trim(),
+        adharFront: adharCardFront.imageUrl.value,
+        adharBack: adharCardBack.imageUrl.value);
+    final added = await Repo.addDocuments(documents);
+    if (added) {
+      Get.to(const Lodingpage());
+    } else {
+      print("Failed to Add Documents details");
+    }
+  }
+
+  vehicleScreenValidation(userId) async {
+    if (vehicleKey.currentState!.validate()) {
+      await addVehicleDetails(userId);
+    } else {}
   }
 
   personalScreenValidation() {
     if (personalKey.currentState!.validate()) {
+      // Get.to(VehicleInfo());
+      // showTaxiDriverDetailsDialog();
       personalScreenValidation2();
     } else {}
   }
 
-  personalScreenValidation2() {
+  personalScreenValidation2() async {
     if (phoneController.text.isNotEmpty &&
         emailContorllers.text.isNotEmpty &&
         genderController.text.isNotEmpty &&
         birthController.text.isNotEmpty) {
-      createDriver();
+      await createDriver();
+      showTaxiDriverDetailsDialog();
     } else {
       Get.snackbar("Error Message", "Fill all colums",
           backgroundColor: Colors.red);
     }
   }
-  //===================//
-
-  //=============add vehicle==================//
-  vehicleScreenValidation(int userId) {
-    if (vehicleKey.currentState!.validate()) {
-      addVehicleDetails(userId);
-    } else {}
-  }
-
-  addVehicleDetails(int userId) async {
-    final vehicle = VehicleDetails(
-        userId: userId,
-        vehicleBrand: carBrandController.text.trim(),
-        vehicleModel: carModelController.text.trim(),
-        vehicleYear: carYearControllerl.text.trim(),
-        vehicleColor: carColorController.text.trim(),
-        vehicleSeat: carSeatController.text.trim(),
-        vehicleNumber: carNumberController.text.trim(),
-        vehicleType: selectedVehicleGet!.name.trim());
-    bool sucesss = await Apicalling.addVehicle(vehicle);
-    if (sucesss) {
-      Get.to(DocumentScreen(
-        userId: userId,
-      ));
-    } else {
-      Get.snackbar(
-          'Error Occured', 'The Vehicle datas not added well ,try again ');
-    }
-  }
-  // =================================//
-
-  //===============addDocument==================//
-
-  addDocumetsDetails(int userId) async {
-    final document = Documents(
-        userId: userId,
-        licenseNo: licenseController.text.trim(),
-        licenseExp: expiereDateController.text.trim(),
-        licenseFront: licenseFrontController.urlImage.value,
-        licenseBack: licenseBackController.urlImage.value,
-        adharNo: adharNumberController.text.trim(),
-        adharAddress: adharAddressController.text.trim(),
-        adharFront: adharCardFront.urlImage.value,
-        adharBack: adharCardBack.urlImage.value);
-    var response = await Apicalling.addDocumets(
-      document,
-    );
-    if (response) {
-      Get.offAll(const Lodingpage());
-    } else {
-      Get.snackbar(
-          'Error Occured', 'The Documents datas not added well ,try again ');
-    }
-  }
-
-  // login function/;
 
   final Rx<DateTime> selectedDate = DateTime.now().obs;
   selectGetnder(newvalue) {
@@ -259,9 +253,8 @@ class SignupController extends GetxController {
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       profilepicPath.value = pickedImage.path;
-
       isProfiepathSet.value = true;
-      urlImage.value = await imagaUrl(pickedImage.path);
+      imageUrl.value = await getImageUrlfromFirebase(pickedImage.path);
       update();
     } else {
       Get.snackbar(
@@ -273,12 +266,60 @@ class SignupController extends GetxController {
     }
   }
 
-  imagaUrl(String image) async {
+  void showTaxiDriverDetailsDialog() {
+    Get.defaultDialog(
+        title: 'Details Submission',
+        content: Text(
+          '''\n
+         1. Vehicle Details:
+          - Provide accurate information about your vehicle.
+          - Make sure to include the car's make, model, and registration details.
+
+          2. Vehicle Age Requirement:
+          - Your car must be no more than 5 years old.
+          - Please verify your vehicle's manufacturing year before submission.
+
+          Additional Notes:
+          - Ensure that all provided information is accurate to prevent any discrepancies.
+          - Verify the spelling and formatting of all details to avoid any errors or rejections.
+          - Once all fields are filled without any errors, you can submit your driver details successfully.
+           ''',
+          textAlign: TextAlign.center,
+          style:
+              GoogleFonts.urbanist(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+        contentPadding: const EdgeInsets.only(right: 20, left: 10),
+        titleStyle: GoogleFonts.urbanist(fontWeight: FontWeight.bold),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(17.0),
+            child: InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: const AutButton(text: 'Done')),
+          )
+        ]);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    print("Controller Created");
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    print("Deleted");
+  }
+
+  getImageUrlfromFirebase(String image) async {
     String? url;
     String uniqueName = DateTime.now().millisecond.toString();
-    Reference fireBaseRootReference = FirebaseStorage.instance.ref();
+    Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
-        fireBaseRootReference.child('myPictures$uniqueName.png');
+        firebaseRootReference.child('myPictures$uniqueName.png');
     try {
       await toUploadImgReference.putFile(File(image));
       url = await toUploadImgReference.getDownloadURL();

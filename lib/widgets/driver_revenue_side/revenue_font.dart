@@ -11,7 +11,7 @@ class RevenuFont extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.urbanist(
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w700,
           color: const Color.fromARGB(255, 219, 163, 9)),
     );
@@ -26,7 +26,7 @@ class RevenueAmountFont extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.urbanist(
-          fontSize: 30, fontWeight: FontWeight.w800, color: Colors.amber),
+          fontSize: 25, fontWeight: FontWeight.w800, color: Colors.amber),
     );
   }
 }

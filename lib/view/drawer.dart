@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
 import 'package:taxi_app/service/shadepreferance.dart';
+import 'package:taxi_app/view/app_info.dart';
+import 'package:taxi_app/view/privacy_policy.dart';
+import 'package:taxi_app/view/terms_condition_screen.dart';
 import 'package:taxi_app/view/welcome_screen.dart';
 
 class ScreenDrawer extends StatelessWidget {
@@ -31,43 +34,30 @@ class ScreenDrawer extends StatelessWidget {
           ),
         ),
         ListTile(
-          leading: const Icon(Icons.info_outline),
-          title: Text(
-            'App info',
-            style:
-                GoogleFonts.urbanist(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          onTap: () {},
-        ),
-        ListTile(
           leading: const Icon(Icons.lock),
           title: Text(
             'Privacy & policy',
             style:
                 GoogleFonts.urbanist(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          onTap: () {},
+          onTap: () {
+            Get.to(const PrivacyPolicy());
+          },
         ),
         ListTile(
           leading: const Icon(
-            Icons.question_mark,
+            Icons.book,
           ),
           title: Text(
-            'Help',
+            'Terms and Condition',
             style:
                 GoogleFonts.urbanist(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          onTap: () {},
+          onTap: () {
+            Get.to(const TermsConditionScreen());
+          },
         ),
-        // ListTile(
-        //   leading: Icon(Icons.card_membership),
-        //   title: Text(
-        //     'Add Coupons',
-        //     style:
-        //         GoogleFonts.urbanist(fontWeight: FontWeight.bold, fontSize: 16),
-        //   ),
-        //   onTap: () {},
-        // ),
+
         ListTile(
           leading: const Icon(
             Icons.logout,
@@ -123,7 +113,7 @@ class LogoutDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async {
-            Sharedpref.instence.signout();
+            Sharedpref.instance.signout();
             Get.offAll(WelcomeScreen());
           },
           child: const Text(

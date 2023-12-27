@@ -25,11 +25,6 @@ class UploadLicesneScreen extends StatelessWidget {
               height: 30,
             ),
             CupertonTextfield(
-              // controller: controller.licenseController,
-              title: "Driving License",
-              validator: (value) => controller.textFeildValidation(value),
-            ),
-            CupertonTextfield(
               controller: controller.expiereDateController,
               title: "Expire date",
               validator: (value) => controller.textFeildValidation(value),

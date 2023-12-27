@@ -52,7 +52,7 @@ class _BottamNavBarState extends State<BottamNavBar>
     return SafeArea(
       child: Scaffold(
         body: BottomBar(
-          fit: StackFit.expand,
+          // fit: StackFit.loose,
           icon: (width, height) => Center(
             child: IconButton(
               padding: EdgeInsets.zero,
@@ -64,11 +64,9 @@ class _BottamNavBarState extends State<BottamNavBar>
               ),
             ),
           ),
-          borderRadius: BorderRadius.circular(500),
+          borderRadius: BorderRadius.circular(10),
           duration: const Duration(seconds: 1),
-          curve: Curves.decelerate,
-          showIcon: true,
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width * 0.6,
           barColor: const Color.fromARGB(255, 56, 56, 55),
           start: 2,
           end: 0,
@@ -77,15 +75,15 @@ class _BottamNavBarState extends State<BottamNavBar>
           iconHeight: 35,
           iconWidth: 35,
           reverse: false,
-          hideOnScroll: true,
+          hideOnScroll: false,
           scrollOpposite: false,
           onBottomBarHidden: () {},
           onBottomBarShown: () {},
           body: (context, controller) => TabBarView(
             controller: tabController,
             dragStartBehavior: DragStartBehavior.down,
-            physics: const BouncingScrollPhysics(),
-            children: [HomeScreen(), PersonScreen()],
+            physics: const NeverScrollableScrollPhysics(),
+            children: const [HomeScreen(), PersonScreen()],
           ),
           child: TabBar(
             indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),

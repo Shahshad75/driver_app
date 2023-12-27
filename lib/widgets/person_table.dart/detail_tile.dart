@@ -37,7 +37,7 @@ class DetailTile extends StatelessWidget {
                     child: Text(
                       sub,
                       style: GoogleFonts.urbanist(
-                          fontSize: 16, fontWeight: FontWeight.w500),
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -59,7 +59,8 @@ class DetailTile extends StatelessWidget {
                           ),
                           suffixIcon: suffixicon,
                           hintText: hittext,
-                          hintStyle: const TextStyle(color: Colors.grey),
+                          hintStyle:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                           focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.yellow),
                           ),

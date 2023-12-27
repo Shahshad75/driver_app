@@ -7,7 +7,7 @@ import 'package:taxi_app/view/splash_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Sharedpref.instence.initeStorage();
+  await Sharedpref.instance.initStorage();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,7 +21,7 @@ class MyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: Splash(),
     );
   }
 }

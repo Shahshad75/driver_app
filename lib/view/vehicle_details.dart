@@ -96,12 +96,7 @@ class _VehicleInfoState extends State<VehicleInfo> {
                         validator: (value) =>
                             controller.textFeildValidation(value),
                       ),
-                      CupertonTextfield(
-                        title: 'Vehicle Number',
-                        controller: controller.carNumberController,
-                        validator: (value) =>
-                            controller.textFeildValidation(value),
-                      ),
+                    
                     ],
                   ),
                 ),

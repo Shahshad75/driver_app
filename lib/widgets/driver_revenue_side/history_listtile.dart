@@ -13,7 +13,7 @@ class _UserInfoState extends State<UserInfo> {
   void toggleContainer() {
     setState(() {
       isExpanded = !isExpanded;
-      containerHeight = isExpanded ? 250.0 : 100.0;
+      containerHeight = isExpanded ? 200.0 : 100.0;
     });
   }
 
@@ -52,7 +52,7 @@ class _UserInfoState extends State<UserInfo> {
                               decoration: BoxDecoration(
                                   color: const Color.fromARGB(255, 51, 211, 64),
                                   borderRadius: BorderRadius.circular(10)),
-                              width: 120,
+                              width: MediaQuery.sizeOf(context).width * .2,
                               height: 30,
                               child: Center(
                                   child: Text('Completed',
