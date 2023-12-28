@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -20,10 +22,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeController controller = Get.put(HomeController(), permanent: true);
-  DriverController driver = Get.put(DriverController());
+  DriverController driver = Get.find();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  late GoogleMapController mapController;
+  Completer<GoogleMapController> mapController =
+      Completer<GoogleMapController>();
   List<LatLng> polylineCoordinates = [];
 
   @override
@@ -74,11 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               currentlocation.longitude),
                           zoom: 12.5),
                       onMapCreated: (controller) {
-                        mapController = controller;
-
-                        mapController.animateCamera(CameraUpdate.newLatLng(
-                            LatLng(currentlocation.latitude,
-                                currentlocation.longitude)));
+                        controller.animateCamera(CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                                target: LatLng(currentlocation.latitude,
+                                    currentlocation.longitude),
+                                zoom: 15)));
+                        mapController.complete(controller);
                       },
                       onCameraMove: (CameraPosition position) {},
                       markers: {
@@ -98,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: OnlineOffBar(),
                   )
                 : const SizedBox()),
-            CustomAppbar(),
+            CustomAppbar(mapController: mapController),
 
             // take obx//
             // Positioned(
@@ -131,11 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller.currentLocation.value.longitude),
             zoom: 12.5),
         onMapCreated: (controller) {
-          mapController = controller;
-          mapController.animateCamera(CameraUpdate.newLatLng(LatLng(
+          mapController.complete(controller);
+          controller.animateCamera(CameraUpdate.newLatLng(LatLng(
               double.parse(data['dropoffLat'] ?? "11.2588"),
               double.parse(data['dropoffLang'] ?? "75.7804"))));
-          mapController.animateCamera(CameraUpdate.newLatLng(
+          controller.animateCamera(CameraUpdate.newLatLng(
             LatLng(currentlocation.latitude, currentlocation.longitude),
           ));
           fetchRoute(
@@ -281,11 +285,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller.currentLocation.value.longitude),
             zoom: 12.5),
         onMapCreated: (controller) {
-          mapController = controller;
-          mapController.animateCamera(CameraUpdate.newLatLng(LatLng(
+          mapController.complete(controller);
+          controller.animateCamera(CameraUpdate.newLatLng(LatLng(
               double.parse(data['dropoffLat']),
               double.parse(data['dropoffLang']))));
-          mapController.animateCamera(CameraUpdate.newLatLng(LatLng(
+          controller.animateCamera(CameraUpdate.newLatLng(LatLng(
               double.parse(data['pickupLat']),
               double.parse(data['pickupLang']))));
           fetchRoute(

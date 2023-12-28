@@ -1,15 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
 import 'package:taxi_app/controller/home_controller.dart';
 import 'package:taxi_app/service/repo.dart';
 
 class CustomAppbar extends StatelessWidget {
-  CustomAppbar({super.key});
+  CustomAppbar({super.key, required this.mapController});
   final HomeController controller = Get.put(HomeController());
   final DriverController driverController = Get.find();
+  final Completer<GoogleMapController> mapController;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,6 +52,15 @@ class CustomAppbar extends StatelessWidget {
                   activeColor: const Color.fromARGB(130, 62, 136, 64),
                   value: controller.onlineStatus.value,
                   onChanged: (value) async {
+                    mapController.future.then((con) {
+                      con.animateCamera(CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                              target: LatLng(
+                                  controller.currentLocation.value.latitude,
+                                  controller.currentLocation.value.longitude),
+                              zoom: 15)));
+                    });
+
                     controller.onlineStatus.value = value;
                     if (value) {
                       await Repo.upadateDriverStatus(

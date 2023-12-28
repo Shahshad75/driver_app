@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
 import 'package:taxi_app/controller/home_controller.dart';
 import 'package:taxi_app/model/revenue.dart';
@@ -29,7 +30,7 @@ class _PersonScreenState extends State<PersonScreen> {
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.amber,
-        title: Text("Hi ${driver.driver.name}..."),
+        title: Text("Hi ${driver.driver.name}....."),
         actions: [
           IconButton(
               onPressed: () {
@@ -76,10 +77,15 @@ class _PersonScreenState extends State<PersonScreen> {
                       itemCount: controller.revenueList?.length,
                       itemBuilder: (context, index) {
                         Revenue detail = controller.revenueList![index];
+                        DateTime parsedDate =
+                            DateFormat('dd/MM/yyyy').parse(detail.date);
+
+                        String formattedDate =
+                            DateFormat('MMMM dd, yyyy').format(parsedDate);
                         return Card(
                           child: ListTile(
                             leading: const Icon(Icons.date_range),
-                            title: Text(detail.date),
+                            title: Text(formattedDate),
                             subtitle:
                                 Text("RideId : ${detail.bookingId.toString()}"),
                             trailing: Text(
