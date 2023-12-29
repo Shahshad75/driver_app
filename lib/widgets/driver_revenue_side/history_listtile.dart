@@ -1,7 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UserInfo extends StatefulWidget {
+  const UserInfo({super.key});
+
   @override
   _UserInfoState createState() => _UserInfoState();
 }

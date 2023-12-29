@@ -41,7 +41,7 @@ class Sharedpref {
   }
 
   int? getId() {
-    final map = getAuthDetails();
+      getAuthDetails();
     int? id = sharedpref.getInt(userid);
     if (id != null) {
       return id;

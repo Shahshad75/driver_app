@@ -101,7 +101,6 @@ class HomeController extends GetxController {
       locationSettings:
           AndroidSettings(distanceFilter: 0, accuracy: LocationAccuracy.best),
     ).listen((Position position) async {
-      print("am listing");
       currentLocation.value = position;
       if (onlineStatus.value) {
         updateToDB();
@@ -161,13 +160,12 @@ class HomeController extends GetxController {
     };
     const url = 'https://fcm.googleapis.com/fcm/send';
 
-    final response =
+
         await http.post(Uri.parse(url), body: jsonEncode(body), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader:
           "key=AAAAOd8TloI:APA91bFR5DQqeZ4sK3pKmCDVG2gycpvL-0k3P37vFfc8dGGiBmTk6etbnucQJJZG2hfdYx_em93yVIcaJFeDWl2QxXYdJurwnE-YvIGmxp5K0Z7zbbYlmCdCsRpxdF0-Et5sHjkzhcjd",
     });
-    print("===========${response}");
   }
 
   Future<void> driverIsReadyTrip(String token, String status) async {

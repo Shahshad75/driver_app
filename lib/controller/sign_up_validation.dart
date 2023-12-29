@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +90,6 @@ class SignupController extends GetxController {
   ];
 
   createDriver() async {
-    print("inside Function");
     final driver = Driver(
         licenseNumber: licenseController.text.trim(),
         name: nameController.text.trim(),
@@ -106,7 +107,6 @@ class SignupController extends GetxController {
         userId: id,
       ));
     } else {
-      print("Failed to Add Driver details");
     }
   }
 
@@ -125,7 +125,6 @@ class SignupController extends GetxController {
     if (added) {
       Get.to(DocumentScreen(id: userId), transition: Transition.cupertino);
     } else {
-      print("Failed to Add Vehicle details");
     }
   }
 
@@ -144,7 +143,6 @@ class SignupController extends GetxController {
     if (added) {
       Get.to(const Lodingpage());
     } else {
-      print("Failed to Add Documents details");
     }
   }
 
@@ -301,17 +299,8 @@ class SignupController extends GetxController {
         ]);
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    print("Controller Created");
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-    print("Deleted");
-  }
+
 
   getImageUrlfromFirebase(String image) async {
     String? url;
@@ -323,9 +312,7 @@ class SignupController extends GetxController {
       await toUploadImgReference.putFile(File(image));
       url = await toUploadImgReference.getDownloadURL();
     } catch (e) {
-      print(e);
     }
-    print(url);
     return url;
   }
 }

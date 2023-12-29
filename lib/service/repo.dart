@@ -105,21 +105,18 @@ class Repo {
       'status': 'Active',
       'category': 'Driver'
     };
-    print(body);
     var response =
         await http.post(url, body: jsonEncode(body), headers: Url.headers);
     return response.statusCode == 200;
   }
 
   static Future<bool> acceptOrRejectBooking(int userid, String status) async {
-    print(userid);
-    print(status);
+  
     var url =
         Uri.parse("${Url.baseUrl}${Url.booking}${Url.ridestatus}/$userid");
     final body = {"status": status};
     final response =
         await http.patch(url, body: jsonEncode(body), headers: Url.headers);
-    print(response.body);
     return response.statusCode == 200;
   }
 

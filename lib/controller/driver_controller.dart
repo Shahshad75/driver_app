@@ -45,7 +45,6 @@ class DriverController extends GetxController {
       String formattedDate =
           DateFormat('dd/MM/yyyy').format(selectedEndDate.value);
       endDateController.text = formattedDate;
-      print("=============end date${startDateController.text}}");
     } else {}
   }
 }

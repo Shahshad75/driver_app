@@ -2,7 +2,8 @@ class Url {
   static const headers = {'Content-Type': 'application/json'};
   static const baseUrl = "http://10.4.2.89:8080";
   //http://10.4.4.163:8080
-  //
+  //10.0.2.2
+  //10.4.2.89
   static const driver = "/driver";
   static const firebase = "/firebase";
   static const token = "/token";

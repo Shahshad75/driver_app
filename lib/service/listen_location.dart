@@ -39,8 +39,7 @@ class Helper {
       Coordinates driverLocation, Coordinates customerLocation) {
     double thresholdDistance = 100.000;
     double distance = calculateDistance(driverLocation, customerLocation);
-    print("==============================");
-    print(distance <= thresholdDistance);
+
     return distance <= thresholdDistance;
   }
 }

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
 import 'package:taxi_app/service/shadepreferance.dart';
-import 'package:taxi_app/view/app_info.dart';
 import 'package:taxi_app/view/privacy_policy.dart';
 import 'package:taxi_app/view/terms_condition_screen.dart';
 import 'package:taxi_app/view/welcome_screen.dart';

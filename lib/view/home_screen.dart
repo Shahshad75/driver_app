@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -82,7 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 target: LatLng(currentlocation.latitude,
                                     currentlocation.longitude),
                                 zoom: 15)));
-                        mapController.complete(controller);
+                        try {
+                          mapController.complete(controller);
+
+                          // ... rest of your code ...
+                        } catch (e, stackTrace) {
+                          print('Error in onMapCreated: $e\n$stackTrace');
+                        }
                       },
                       onCameraMove: (CameraPosition position) {},
                       markers: {
@@ -135,7 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller.currentLocation.value.longitude),
             zoom: 12.5),
         onMapCreated: (controller) {
-          mapController.complete(controller);
+          try {
+            mapController.complete(controller);
+
+            // ... rest of your code ...
+          } catch (e, stackTrace) {
+            print('Error in onMapCreated: $e\n$stackTrace');
+          }
           controller.animateCamera(CameraUpdate.newLatLng(LatLng(
               double.parse(data['dropoffLat'] ?? "11.2588"),
               double.parse(data['dropoffLang'] ?? "75.7804"))));
