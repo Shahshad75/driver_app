@@ -1,54 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taxi_app/controller/driver_controller.dart';
-import 'package:taxi_app/service/api.dart';
+import 'package:taxi_app/service/repo.dart';
 import 'package:taxi_app/service/shadepreferance.dart';
-import 'package:taxi_app/controller/sign_in_controller.dart';
-import 'package:taxi_app/view/login_screen.dart';
+import 'package:taxi_app/view/signup_screen.dart';
+
 import 'package:taxi_app/view/welcome_screen.dart';
+import 'package:taxi_app/widgets/bottam_navigaton_bar.dart';
 
-import '../widgets/bottam_navigaton_bar.dart';
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class Splash extends StatefulWidget {
+  const Splash({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<Splash> createState() => _SplashState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  final SignInController controller = Get.put(SignInController());
-
-  final DriverController driver = Get.put(DriverController());
+class _SplashState extends State<Splash> {
+  DriverController driver = Get.put(DriverController());
   @override
   void initState() {
-    super.initState();
     validatorDriver();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.amber,
-        width: 100,
-        height: 100,
+      body: Center(
+        child: Container(
+          width: 100,
+          height: 100,
+          color: Colors.amber,
+        ),
       ),
     );
   }
 
   void validatorDriver() async {
-    final driverAuth = Sharedpref.instence.getAuthDetails();
+    final driverAuth = Sharedpref.instance.getAuthDetails();
 
     if (driverAuth != null) {
-      final data = await Apicalling.loginDriver(
+      final data = await Repo.loginDriver(
           driverAuth['username'], driverAuth['password']);
 
       if (data != null) {
-        driver.driver = data;
+        driver.driver = data ;
         Get.offAll(const BottamNavBar());
       } else {
-        Get.offAll(SignInScreen());
+        Get.offAll(SignUp());
       }
     } else {
       await Future.delayed(const Duration(seconds: 2));

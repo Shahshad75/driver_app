@@ -115,6 +115,7 @@ class PersonalDetails extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.amber,
         onPressed: () {
+        
           controller.personalScreenValidation();
         },
         label: const SizedBox(

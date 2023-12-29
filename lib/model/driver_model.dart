@@ -1,4 +1,3 @@
-
 class Driver {
   int? id;
   String name;
@@ -10,7 +9,7 @@ class Driver {
   String gender;
   String username;
   String password;
-  String qualification;
+  String licenseNumber;
   String experience;
 
   Driver({
@@ -24,7 +23,7 @@ class Driver {
     required this.gender,
     this.username = "",
     this.password = "",
-    required this.qualification,
+    required this.licenseNumber,
     required this.experience,
   });
 
@@ -40,7 +39,7 @@ class Driver {
       gender: json['gender'],
       username: json['username'],
       password: json['password'],
-      qualification: json['qulification'],
+      licenseNumber: json['license_number'],
       experience: json['experience'],
     );
   }
@@ -57,7 +56,7 @@ class Driver {
       'gender': gender,
       'username': username,
       'password': password,
-      'qulification': qualification,
+      'license_number': licenseNumber,
       'experience': experience,
     };
   }

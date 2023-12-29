@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_app/controller/indro_controller.dart';
-import 'package:taxi_app/service/api.dart';
-import 'package:taxi_app/view/signup_screen.dart';
+import 'package:taxi_app/service/repo.dart';
 import 'package:taxi_app/view/login_screen.dart';
+import 'package:taxi_app/view/signup_screen.dart';
 import 'package:taxi_app/widgets/buttons/autbutton.dart';
-
-import '../widgets/textfields/cupertino_textfield.dart';
+import 'package:taxi_app/widgets/textfields/cupertino_textfield.dart';
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({super.key});
-  final Apicalling calling = Apicalling();
+  final Repo calling = Repo();
   final IndroController controller = Get.put(IndroController());
   @override
   Widget build(BuildContext context) {
@@ -38,9 +37,10 @@ class WelcomeScreen extends StatelessWidget {
                           // middleText: '',
                           content: Obx(
                             () => controller.status.value
-                                ? const Text(
-                                    'Your Status is Pending wait few days')
-                                : const CupertonTextfield(
+                                ? Text(
+                                    'Your Status is ${controller.statusDriver}')
+                                : CupertonTextfield(
+                                    controller: controller.number,
                                     title: 'Enter Your Phone Number',
                                   ),
                           ),
@@ -53,11 +53,6 @@ class WelcomeScreen extends StatelessWidget {
                           confirmTextColor:
                               const Color.fromARGB(255, 70, 70, 70),
                           buttonColor: Colors.amber);
-                      // Get.snackbar(
-                      //   backgroundColor: Colors.amber,
-                      //   "Status",
-                      //   'Your Status pending',
-                      // );
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -146,10 +141,11 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   loading() async {
+    await Future.delayed(const Duration(seconds: 1));
     const Center(
       child: CircularProgressIndicator(),
     );
-    await Future.delayed(Duration(seconds: 1));
-    Text('Your Status is Pending wait few days');
+
+    const Text('Your Status is Pending wait few days');
   }
 }

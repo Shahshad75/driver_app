@@ -5,10 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextfield extends StatelessWidget {
   CustomTextfield(
-      {super.key, this.controller, required this.hintText, this.validation});
+      {super.key,
+      this.controller,
+      required this.hintText,
+      this.validation,
+      this.suffixIcon});
   final controller;
   final hintText;
   FormFieldValidator? validation;
+  Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,6 +22,7 @@ class CustomTextfield extends StatelessWidget {
         validator: validation,
         controller: controller,
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.red,

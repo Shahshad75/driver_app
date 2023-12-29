@@ -8,9 +8,9 @@ import 'package:taxi_app/widgets/buttons/autbutton.dart';
 import 'package:taxi_app/widgets/documentation_table.dart/documet_table.dart';
 
 class DocumentScreen extends StatelessWidget {
-  DocumentScreen({super.key, this.userId});
-  final int? userId;
-  final SignupController controller = Get.put(SignupController());
+  final int? id;
+  DocumentScreen({super.key,this.id});
+  final SignupController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +47,7 @@ class DocumentScreen extends StatelessWidget {
           ),
           InkWell(
               onTap: () {
-                controller.addDocumetsDetails(userId!);
+                controller.addDriverDocuments(id);
               },
               child: const AutButton(text: "Add and Save"))
         ],

@@ -67,9 +67,6 @@ class DocumentTable extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
                             CupertonTextfield(
                               text: controller.licenseController.text,
                               controller: controller1,
